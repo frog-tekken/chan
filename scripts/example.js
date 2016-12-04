@@ -12,4 +12,12 @@ module.exports = function (robot) {
       res.reply("Opening " + doorType + " doors");
     }
   });
+
+  robot.hear(/([0-9]+)\+([0-9]+)=\?/i, function (res) {
+    var leftHand = res.match[1];
+    var rightHand = res.match[2];
+
+    var answer = parseInt(leftHand) + parseInt(rightHand);
+    res.reply("答えは" + answer + "だろ！？");
+  })
 };
