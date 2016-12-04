@@ -1,3 +1,6 @@
+var CurrencyRate = require("./rate").CurrencyRate;
+var currency_rate = new CurrencyRate();
+
 module.exports = function (robot) {
   robot.hear(/こんにちは/i, function (res) {
     res.send("こんにちは！！");
@@ -19,5 +22,19 @@ module.exports = function (robot) {
 
     var answer = parseInt(leftHand) + parseInt(rightHand);
     res.reply("答えは" + answer + "だろ！？");
-  })
+  });
+
+  robot.hear(/カナダドル.*レート/, function (res) {
+    currency_rate.fetch("CAD", "JPY", function (message) {
+      if (message) {
+        var words = message.split(' ');
+        message = words.join('');
+        message = message.replace('=', "あたり");
+        message = "ちなみに今のレートは" + message + "らしいぞ";
+      } else {
+        message = 'エラー起きとるやないかい！';
+      }
+      res.reply(message)
+    })
+  });
 };
